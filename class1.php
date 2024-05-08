@@ -47,7 +47,7 @@ echo $obj->GetName();
 //
 /**
 1. Find the area of a rectangle where the length
- is 5 and the width is 8.
+is 5 and the width is 8.
 2. Find the area of a triangle where the base is 4 and the height is 3.
 3. Find the area of a circle where the radius is 3.
 4. Convert temperatures from Celsius to Fahrenheit and Fahrenheit to Celsius.
