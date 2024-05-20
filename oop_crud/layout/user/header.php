@@ -18,3 +18,8 @@ require_once dirname(__DIR__)."/../include/web.php";
 
 <body>
    
+
+<?php 
+
+require_once "nav.php";
+?>
