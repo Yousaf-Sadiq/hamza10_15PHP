@@ -39,7 +39,7 @@ class Mysqli
     }
 
 
-    public function Myinsert(string $table, array $data)
+    public function Myinsert(string $table, array $data, $emailCheck = false)
     {
 
         $status = [

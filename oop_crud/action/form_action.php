@@ -7,7 +7,7 @@ use app\database\Mysqli as DB;
 use app\database\helper as help;
 
 
-$obj = new DB;
+$database = new DB;
 
 $help = new help;
 ?>
@@ -51,6 +51,7 @@ if (isset($_POST["insert"]) && !empty($_POST["insert"])) {
 
 
 
+
     if ($status["error"] > 0) {
         echo json_encode($status);
 
@@ -58,6 +59,21 @@ if (isset($_POST["insert"]) && !empty($_POST["insert"])) {
 
         // "name":"xyz"
         // name:"xyz"
+    } else {
+
+        $hash = password_hash($password, PASSWORD_BCRYPT);
+
+        $encrypt = base64_encode($password);
+
+        $data=[
+            "email"=>$email,
+            "password"=>$hash,
+            "ptoken"=>$encrypt
+        ];
+
+
+     echo  $database->Myinsert("users",$data);
+
     }
 }
 

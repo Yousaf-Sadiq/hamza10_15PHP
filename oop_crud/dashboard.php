@@ -43,10 +43,13 @@ $obj = new DB;
 </form>
 
 
-<?php
 
+<?php
 require_once dirname(__FILE__) . "/layout/user/footer.php";
 ?>
+
+
+
 
 <script>
 
@@ -67,8 +70,16 @@ require_once dirname(__FILE__) . "/layout/user/footer.php";
 
         let response = await data.json();
 
-        console.log(response);
-        
+        if (response.error > 0) {
+            let msg = response.msg;
+            
+            for (const message of msg) {
+
+                ShowMsg(message, "error", "danger")
+            }
+
+        }
+
     });
 
 </script>
