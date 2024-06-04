@@ -79,6 +79,9 @@ require_once dirname(__FILE__) . "/layout/user/footer.php";
             }
 
         }
+        else{
+            ShowMsg(response.msg, "error", "success")
+        }
 
     });
 

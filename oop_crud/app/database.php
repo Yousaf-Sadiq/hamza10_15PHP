@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 namespace app\database;
+// code optimization
+require_once dirname(__FILE__)."/trait/insert.php";
+require_once dirname(__FILE__)."/trait/checkTable.php";
+require_once dirname(__FILE__)."/trait/select.php";
+require_once dirname(__FILE__)."/trait/Mysql.php";
 
 class Mysqli
 {
@@ -39,80 +44,10 @@ class Mysqli
     }
 
 
-    public function Myinsert(string $table, array $data, $emailCheck = false)
-    {
-
-        $status = [
-            "error" => 0,
-            "msg" => []
-        ];
-
-        // INSERT INTO `users`(`id`, `user_name`, `email`, `password`, `ptoken`, `address_id`, `role_id`) 
-        // VALUES ('[value-1]','[value-2]','[value-3]','[value-4]','[value-5]','[value-6]','[value-7]')
 
 
-        if ($this->CheckTable($table)) {
+  use \INSERT,\checkTable,\Select,\Mysql;
 
-            $this->query = "INSERT INTO `{$table}` ";
-
-            $keys = "`" . implode("` , `", array_keys($data)) . "`";
-
-            $values = "'" . implode("' , '", array_values($data)) . "'";
-
-            $this->query .= " ({$keys}) VALUES  ({$values})";
-
-            $this->exe = $this->conn->query($this->query);
-
-
-            if ($this->exe) {
-
-                if ($this->conn->affected_rows > 0) {
-
-                    array_push($status["msg"], "DATA HAS BEEN INSERTED");
-
-                } else {
-
-                    $status["error"]++;
-
-                    array_push($status["msg"], "DATA HAS NOT BEEN INSERTED {$this->query}");
-                }
-
-            } else {
-                $status["error"]++;
-                array_push($status["msg"], "ERROR IN QUERY {$this->query}");
-
-            }
-
-        } else {
-
-            $status["error"]++;
-            array_push($status["msg"], "TABLE `{$table}` IS NOT EXISTED");
-
-        }
-
-
-
-        return json_encode($status);
-
-    }
-
-
-    private function CheckTable(string $table)
-    {
-        $this->query = "SELECT * 
-        FROM information_schema.tables
-        WHERE table_schema = '{$this->db}' 
-            AND table_name = '{$table}'
-        LIMIT 1;";
-        $this->exe = $this->conn->query($this->query);
-
-        if ($this->exe->num_rows > 0) {
-            return true;
-        } else {
-            return false;
-        }
-
-    }
 
 
 

@@ -20,10 +20,13 @@ if (isset($_POST["insert"]) && !empty($_POST["insert"])) {
     $password = $help->Filter_data($_POST["pswd"]);
 
 
+
+
     $status = [
         "error" => 0,
         "msg" => []
     ];
+
 
 
     if (!isset($email) || empty($email)) {
@@ -42,13 +45,22 @@ if (isset($_POST["insert"]) && !empty($_POST["insert"])) {
 
 
 
+
     if (!isset($password) || empty($password)) {
         $status["error"]++;
 
         array_push($status["msg"], "PASSWORD IS REQUIRED");
     }
 
+    $checKEmail="SELECT * FROM `users` WHERE `email`='{$email}'";
+    
+    $check = $database->mysql($checKEmail,true);
 
+    if ($check) {
+        $status["error"]++;
+
+        array_push($status["msg"], "EMAIL ALREADY EXIST"); 
+    }
 
 
 
@@ -65,14 +77,14 @@ if (isset($_POST["insert"]) && !empty($_POST["insert"])) {
 
         $encrypt = base64_encode($password);
 
-        $data=[
-            "email"=>$email,
-            "password"=>$hash,
-            "ptoken"=>$encrypt
+        $data = [
+            "email" => $email,
+            "password" => $hash,
+            "ptoken" => $encrypt
         ];
 
 
-     echo  $database->Myinsert("users",$data);
+        echo $database->Myinsert("users", $data);
 
     }
 }
