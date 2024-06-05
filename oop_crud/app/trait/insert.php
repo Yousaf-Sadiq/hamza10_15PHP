@@ -15,13 +15,14 @@ trait INSERT{
 
         if ($this->CheckTable($table)) {
 
-            $this->query = "INSERT INTO `{$table}` ";
+            
 
-            $keys = "`" . implode("` , `", array_keys($data)) . "`";
+            $col = "`" . implode("` , `", array_keys($data)) . "`";
 
             $values = "'" . implode("' , '", array_values($data)) . "'";
+            
 
-            $this->query .= " ({$keys}) VALUES  ({$values})";
+            $this->query = "INSERT INTO `{$table}` ({$col}) VALUES  ({$values})";
 
             $this->exe = $this->conn->query($this->query);
 
