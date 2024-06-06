@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 namespace app\database;
+
 // code optimization
-require_once dirname(__FILE__)."/trait/insert.php";
-require_once dirname(__FILE__)."/trait/checkTable.php";
-require_once dirname(__FILE__)."/trait/select.php";
-require_once dirname(__FILE__)."/trait/Mysql.php";
+require_once dirname(__FILE__) . "/trait/insert.php";
+require_once dirname(__FILE__) . "/trait/checkTable.php";
+require_once dirname(__FILE__) . "/trait/select.php";
+require_once dirname(__FILE__) . "/trait/Mysql.php";
+require_once dirname(__FILE__) . "/trait/getResult.php";
 
 class Mysqli
 {
@@ -46,7 +48,7 @@ class Mysqli
 
 
 
-  use \INSERT,\checkTable,\Select,\Mysql;
+    use \INSERT, \checkTable, \Select, \Mysql,\Result;
 
 
 
@@ -66,6 +68,12 @@ class helper extends Mysqli
         $data = $this->conn->real_escape_string($data);
 
         return $data;
+    }
+    public function pre($a)
+    {
+        echo "<pre>";
+        print_r($a);
+        echo "</pre>";
     }
 }
 ?>

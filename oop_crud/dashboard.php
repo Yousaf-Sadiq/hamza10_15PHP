@@ -3,9 +3,19 @@
 require_once dirname(__FILE__) . "/layout/user/header.php";
 
 use app\database\Mysqli as DB;
-
+use app\database\helper as help;
 
 $obj = new DB;
+$help = new help;
+
+$q = $obj->Select("users", null, null, "id ASC", null);
+
+
+if ($q) {
+    // echo "ok query";
+    $abc = $obj->GetResult();
+}
+// $help->pre($abc);
 
 // $alldata= [
 //     "user_name"=>"xyz",
@@ -16,6 +26,7 @@ $obj = new DB;
 // ];
 
 // //  echo $obj->Myinsert("users",$alldata)
+
 
 
 
@@ -42,6 +53,32 @@ $obj = new DB;
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
+
+<div class="table-responsive">
+    <table class="table table-dark table-hover">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">username</th>
+                <th scope="col">EMAIL</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <?php
+            foreach ($abc as $key => $value) {
+                # code...
+            
+                ?>
+                <tr class="">
+                    <td scope="row"><?php echo $value["id"]?></td>
+                    <td><?php echo $value["user_name"]?></td>
+                    <td><?php echo $value["email"]?></td>
+                </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+</div>
 
 
 <?php
@@ -72,14 +109,14 @@ require_once dirname(__FILE__) . "/layout/user/footer.php";
 
         if (response.error > 0) {
             let msg = response.msg;
-            
+
             for (const message of msg) {
 
                 ShowMsg(message, "error", "danger")
             }
 
         }
-        else{
+        else {
             ShowMsg(response.msg, "error", "success")
         }
 
