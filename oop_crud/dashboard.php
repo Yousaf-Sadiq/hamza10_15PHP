@@ -17,15 +17,16 @@ if ($q) {
 }
 // $help->pre($abc);
 
-// $alldata= [
-//     "user_name"=>"xyz",
-//     "email"=>"xyz@gmail.com",
-//     "password"=>"1234",
-//     "ptoken"=>"1234",
+$alldata = [
+    "user_name" => "xyz",
+    "email" => "xyz@gmail.com",
+    "password" => "1234",
+    "ptoken" => "1234",
 
-// ];
+];
 
 // //  echo $obj->Myinsert("users",$alldata)
+//  echo $obj->update("users",$alldata,"id=20")
 
 
 
@@ -61,6 +62,7 @@ if ($q) {
                 <th scope="col">ID</th>
                 <th scope="col">username</th>
                 <th scope="col">EMAIL</th>
+                <th scope="col">ACTION</th>
             </tr>
         </thead>
         <tbody>
@@ -71,9 +73,20 @@ if ($q) {
             
                 ?>
                 <tr class="">
-                    <td scope="row"><?php echo $value["id"]?></td>
-                    <td><?php echo $value["user_name"]?></td>
-                    <td><?php echo $value["email"]?></td>
+                    <td scope="row"><?php echo $value["id"] ?></td>
+                    <td><?php echo $value["user_name"] ?></td>
+                    <td><?php echo $value["email"] ?></td>
+                    <?php
+                    $id = $value["id"];
+                    $email = $value["email"];
+                    $user_name = $value["user_name"];
+                    ?>
+                    <td>
+                        <a href="javascript:void(0)"
+                            onclick="onEdit('<?php echo $id ?>','<?php echo $email ?>','<?php echo $user_name ?>')"> EDIT
+                        </a>
+                    </td>
+
                 </tr>
             <?php } ?>
         </tbody>
@@ -81,6 +94,25 @@ if ($q) {
 </div>
 
 
+<!-- Modal -->
+<div class="modal fade" id="edit_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="edit_lable" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="edit_lable">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Understood</button>
+            </div>
+        </div>
+    </div>
+</div>
 <?php
 require_once dirname(__FILE__) . "/layout/user/footer.php";
 ?>
@@ -89,6 +121,17 @@ require_once dirname(__FILE__) . "/layout/user/footer.php";
 
 
 <script>
+
+    function onEdit(id, email, userName) {
+        let modal = document.querySelector("#edit_modal");
+
+        let BootstrapModal = new bootstrap.Modal(modal)
+
+        BootstrapModal.show(modal)
+
+    }
+
+
 
     let form = document.querySelector("#MyFORM");
 
@@ -103,7 +146,7 @@ require_once dirname(__FILE__) . "/layout/user/footer.php";
             body: formData,
         }
 
-        let data = await fetch("<?php echo form_action; ?>",options);
+        let data = await fetch("<?php echo form_action; ?>", options);
 
         let response = await data.json();
 

@@ -54,7 +54,7 @@ if (isset($_POST["insert"]) && !empty($_POST["insert"])) {
 
     $checKEmail="SELECT * FROM `users` WHERE `email`='{$email}'";
     
-    $check = $database->mysql($checKEmail,true);
+    $check = $database->mysql($checKEmail,true); 
 
     if ($check) {
         $status["error"]++;
@@ -67,10 +67,7 @@ if (isset($_POST["insert"]) && !empty($_POST["insert"])) {
     if ($status["error"] > 0) {
         echo json_encode($status);
 
-        // associative 
-
-        // "name":"xyz"
-        // name:"xyz"
+       
     } else {
 
         $hash = password_hash($password, PASSWORD_BCRYPT);

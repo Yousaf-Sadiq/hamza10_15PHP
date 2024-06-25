@@ -5,7 +5,7 @@ trait Mysql
 
     // $link->query();
 
-    public function mysql(string $query, $checkRow = false)
+    public function mysql(string $query, bool $checkRow = false)
     {
         $this->query = $query;
 
@@ -23,6 +23,7 @@ trait Mysql
                 }
 
             }
+          
 
             return true;
         } else {

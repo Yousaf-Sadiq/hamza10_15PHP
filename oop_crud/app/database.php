@@ -9,6 +9,7 @@ require_once dirname(__FILE__) . "/trait/checkTable.php";
 require_once dirname(__FILE__) . "/trait/select.php";
 require_once dirname(__FILE__) . "/trait/Mysql.php";
 require_once dirname(__FILE__) . "/trait/getResult.php";
+require_once dirname(__FILE__) . "/trait/update.php";
 
 class Mysqli
 {
@@ -47,8 +48,8 @@ class Mysqli
 
 
 
-
-    use \INSERT, \checkTable, \Select, \Mysql,\Result;
+//   \ => global name space symbol 
+    use \INSERT, \checkTable, \Select, \Mysql,\Result,\Update;
 
 
 
