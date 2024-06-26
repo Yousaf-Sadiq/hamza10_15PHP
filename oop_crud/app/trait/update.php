@@ -45,7 +45,7 @@ trait Update
 
                     $status["error"]++;
 
-                    array_push($status["msg"], "DATA HAS NOT BEEN UPDATED {$this->query}");
+                    array_push($status["msg"], "DATA REMAIN SAME");
                 }
 
             } else {

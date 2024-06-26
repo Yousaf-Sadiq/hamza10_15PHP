@@ -86,4 +86,78 @@ if (isset($_POST["insert"]) && !empty($_POST["insert"])) {
     }
 }
 
+
+if (isset($_POST["UPDATES"]) && !empty($_POST["UPDATES"])) {
+
+    $email = $help->Filter_data($_POST["email"]);
+    $user_name = $help->Filter_data($_POST["user_name"]);
+    $user_id = $help->Filter_data(base64_decode($_POST["_token"]));
+
+
+
+
+    $status = [
+        "error" => 0,
+        "msg" => []
+    ];
+
+
+
+    if (!isset($email) || empty($email)) {
+        $status["error"]++;
+
+        array_push($status["msg"], "EMAIL IS REQUIRED");
+
+    } else {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+
+            $status["error"]++;
+
+            array_push($status["msg"], "EMAIL FORMAT INVALID");
+        }
+    }
+
+
+
+
+    if (!isset($user_name) || empty($user_name)) {
+        $status["error"]++;
+
+        array_push($status["msg"], "USERNAME IS REQUIRED");
+    }
+
+    $checKEmail="SELECT * FROM `users` WHERE `email`='{$email}' AND id <> {$user_id}";
+    
+    $check = $database->mysql($checKEmail,true); 
+
+    if ($check) {
+        $status["error"]++;
+
+        array_push($status["msg"], "EMAIL ALREADY EXIST"); 
+    }
+
+
+
+    if ($status["error"] > 0) {
+        echo json_encode($status);
+
+       
+    } else {
+
+        // $hash = password_hash($password, PASSWORD_BCRYPT);
+
+        // $encrypt = base64_encode($password);
+
+        $data = [
+            "email" => $email,
+            "user_name" => $user_name,
+        ];
+
+
+        echo $database->update("users", $data,"id = '{$user_id}'");
+
+    }
+}
+
+
 ?>

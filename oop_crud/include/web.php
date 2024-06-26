@@ -15,4 +15,7 @@ define("domain1",ROOTPATH.FOLDER);
 define("DASHBOARD",domain1."/dashboard.php");
 
 define("form_action",domain1."/action/form_action.php");
+
+
+
 ?>

@@ -69,15 +69,14 @@ $alldata = [
 
             <?php
             foreach ($abc as $key => $value) {
-                # code...
-            
+
                 ?>
                 <tr class="">
                     <td scope="row"><?php echo $value["id"] ?></td>
                     <td><?php echo $value["user_name"] ?></td>
                     <td><?php echo $value["email"] ?></td>
                     <?php
-                    $id = $value["id"];
+                    $id = base64_encode($value["id"]);
                     $email = $value["email"];
                     $user_name = $value["user_name"];
                     ?>
@@ -103,13 +102,33 @@ $alldata = [
                 <h1 class="modal-title fs-5" id="edit_lable">Modal title</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body text-bg-dark">
 
+                <form class="p-2 " id="Edit_FORM">
+
+                    <input type="hidden" name="UPDATES" value="update">
+                    <input type="hidden" name="_token" id="token">
+
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Email address</label>
+                        <input type="email" name="email" class="form-control" id="emails" aria-describedby="emailHelp">
+                        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">USER NAME</label>
+                        <input type="text" name="user_name" class="form-control" id="user_name">
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
             </div>
-            <div class="modal-footer">
+            <!-- <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary">Understood</button>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>
@@ -129,10 +148,73 @@ require_once dirname(__FILE__) . "/layout/user/footer.php";
 
         BootstrapModal.show(modal)
 
+        let Email = document.querySelector("#emails");
+        let user_name = document.querySelector("#user_name");
+        let token = document.querySelector("#token");
+
+        Email.value = email;
+        user_name.value = userName;
+        token.value = id;
+
     }
 
 
+    // update ======================================================
 
+    let edit_form = document.querySelector("#Edit_FORM");
+
+
+    edit_form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        let formData = new FormData(edit_form);
+
+
+        let url = "<?php echo form_action; ?>";
+        var options = {
+            method: 'POST',
+            body: formData,
+        }
+
+        let data = await fetch(url, options);
+
+        let response = await data.json();
+
+
+        if (response.error > 0) {
+            let msg = response.msg;
+
+            for (const message of msg) {
+
+                ShowMsg(message, "error", "danger")
+            }
+
+        }
+        else {
+
+            ShowMsg(response.msg, "error", "success");
+
+
+            setTimeout(function () {
+                const truck_modal = document.querySelector('#edit_modal');
+                const modal = bootstrap.Modal.getInstance(truck_modal);
+                modal.hide();
+
+                setTimeout(function () {
+                    location.reload();
+                }, 700)
+            }, 1000)
+        }
+
+    });
+
+
+
+
+
+
+
+    // insert==============================================================================
     let form = document.querySelector("#MyFORM");
 
     form.addEventListener("submit", async function (event) {
@@ -166,3 +248,5 @@ require_once dirname(__FILE__) . "/layout/user/footer.php";
     });
 
 </script>
+
+<!-- <script src="asset/js/insert.js"></script> -->
