@@ -122,6 +122,19 @@ $alldata = [
                         <input type="checkbox" class="form-check-input" id="exampleCheck1">
                         <label class="form-check-label" for="exampleCheck1">Check me out</label>
                     </div>
+
+                    <div class="mb-3">
+                        <label for="" class="form-label">Choose file</label>
+                        <input type="file" class="form-control" name="profile2" id="profile2" placeholder=""
+                            aria-describedby="fileHelpId" />
+
+                        <div id="fileHelpId" class="form-text">Help text</div>
+
+                        <input type="text" id="file" name="profile">
+                    </div>
+
+
+
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
@@ -140,6 +153,34 @@ require_once dirname(__FILE__) . "/layout/user/footer.php";
 
 
 <script>
+
+    let profile2 = document.querySelector("#profile2");
+
+    profile2.addEventListener("change", async function () {
+
+        let file= profile2.files[0]; // get current file 
+
+        console.log(file)
+        
+        let formData = new FormData();
+//                         
+        formData.append('upload', "upload");
+        formData.append('profile2', file);
+
+        let url = "<?php echo form_action; ?>";
+        var options = {
+            method: 'POST',
+            body: formData,
+        }
+
+        let data = await fetch(url, options);
+
+        let response = await data.json();
+
+        console.log(response)
+
+    })
+
 
     function onEdit(id, email, userName) {
         let modal = document.querySelector("#edit_modal");

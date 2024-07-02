@@ -48,8 +48,8 @@ class Mysqli
 
 
 
-//   \ => global name space symbol 
-    use \INSERT, \checkTable, \Select, \Mysql,\Result,\Update;
+    //   \ => global name space symbol 
+    use \INSERT, \checkTable, \Select, \Mysql, \Result, \Update;
 
 
 
@@ -60,6 +60,35 @@ class Mysqli
 
 class helper extends Mysqli
 {
+
+    public function File_upload(string $input, array $ext, string $to)
+    {
+
+        $status = [
+            "error" => 0,
+            "msg" => []
+        ];
+
+        $file = $_FILES[$input];
+
+        $file_name = $file["name"];
+        $file_tmp_name = $file["tmp_name"];
+
+        $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION)); // PNG=> png
+
+        if (!in_array($file_ext, $ext)) {
+            $status["error"]++;
+            $string = implode(" , ", $ext);
+            $string = strtoupper($string);
+            array_push($status["msg"], "{$string} ONLY ALLOWED");
+        }
+
+
+        if ($status["error"] > 0) {
+            return json_encode($status);
+        }
+        
+    }
 
     public function Filter_data(string $input)
     {

@@ -14,6 +14,13 @@ $help = new help;
 
 <?php
 
+if (isset($_POST["upload"]) && !empty($_POST["upload"])) {
+  
+   echo $help->File_upload("profile2",["jpg"],"upload"); 
+}
+
+
+
 if (isset($_POST["insert"]) && !empty($_POST["insert"])) {
 
     $email = $help->Filter_data($_POST["email"]);
