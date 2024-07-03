@@ -14,9 +14,9 @@ $help = new help;
 
 <?php
 
-if (isset($_POST["upload"]) && !empty($_POST["upload"])) {
+if (isset($_POST["uploads"]) && !empty($_POST["uploads"])) {
   
-   echo $help->File_upload("profile2",["jpg"],"upload"); 
+   echo $help->File_upload("profile2",["jpg","png","jpeg"],"asset/upload/"); 
 }
 
 
@@ -99,6 +99,7 @@ if (isset($_POST["UPDATES"]) && !empty($_POST["UPDATES"])) {
     $email = $help->Filter_data($_POST["email"]);
     $user_name = $help->Filter_data($_POST["user_name"]);
     $user_id = $help->Filter_data(base64_decode($_POST["_token"]));
+    $prfile = $help->Filter_data($_POST["profile"]);
 
 
 

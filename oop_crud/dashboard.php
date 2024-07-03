@@ -10,7 +10,7 @@ $help = new help;
 
 $q = $obj->Select("users", null, null, "id ASC", null);
 
-
+echo domain2;
 if ($q) {
     // echo "ok query";
     $abc = $obj->GetResult();
@@ -130,7 +130,7 @@ $alldata = [
 
                         <div id="fileHelpId" class="form-text">Help text</div>
 
-                        <input type="text" id="file" name="profile">
+                        <input type="hidden" id="file" name="profile">
                     </div>
 
 
@@ -158,13 +158,13 @@ require_once dirname(__FILE__) . "/layout/user/footer.php";
 
     profile2.addEventListener("change", async function () {
 
-        let file= profile2.files[0]; // get current file 
+        let file = profile2.files[0]; // get current file 
 
         console.log(file)
-        
+
         let formData = new FormData();
-//                         
-        formData.append('upload', "upload");
+        //                         
+        formData.append('uploads', "upload");
         formData.append('profile2', file);
 
         let url = "<?php echo form_action; ?>";
@@ -175,9 +175,28 @@ require_once dirname(__FILE__) . "/layout/user/footer.php";
 
         let data = await fetch(url, options);
 
-        let response = await data.json();
+        let res = await data.json();
 
-        console.log(response)
+        let error = res.error;
+        let msg = res.msg;
+
+        if (error > 0) {
+            for (const mseg of msg) {
+
+                ShowMsg(mseg, "error", "danger")
+
+            }
+
+            profile2.value=""
+
+        }else{
+            ShowMsg("FILE UPLOADED", "error", "success")
+            let file=document.querySelector("#file")
+            console.log(res)
+
+            file.value =JSON.stringify(res);
+        }
+        
 
     })
 

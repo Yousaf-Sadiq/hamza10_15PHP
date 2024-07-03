@@ -69,17 +69,19 @@ class helper extends Mysqli
             "msg" => []
         ];
 
-        $file = $_FILES[$input];
+        $file = $_FILES[$input]; // $_FILES["profile2"]
 
-        $file_name = $file["name"];
+        $file_name = rand(1,99)."_".$file["name"];
         $file_tmp_name = $file["tmp_name"];
 
         $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION)); // PNG=> png
 
         if (!in_array($file_ext, $ext)) {
             $status["error"]++;
+
             $string = implode(" , ", $ext);
             $string = strtoupper($string);
+
             array_push($status["msg"], "{$string} ONLY ALLOWED");
         }
 
@@ -87,7 +89,24 @@ class helper extends Mysqli
         if ($status["error"] > 0) {
             return json_encode($status);
         }
-        
+        $destination = domain2 . "/" . $to . $file_name; //relative path 
+        $abs = domain1 . "/" . $to . $file_name; //relative path 
+
+        if (move_uploaded_file($file_tmp_name, $destination)) {
+
+            $file_location = [
+                "relative_key" => $destination,
+                "abs_key" => $abs,
+            ];
+
+            return json_encode($file_location);
+
+        } else {
+            $status["error"]++;
+            array_push($status["msg"], "FILE UPLOADING ERROR");
+        }
+        return json_encode($status);
+
     }
 
     public function Filter_data(string $input)
