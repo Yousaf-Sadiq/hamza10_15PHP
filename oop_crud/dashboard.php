@@ -118,6 +118,12 @@ $alldata = [
                         <label for="exampleInputPassword1" class="form-label">USER NAME</label>
                         <input type="text" name="user_name" class="form-control" id="user_name">
                     </div>
+                    
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">ADDRESS</label>
+                        <input type="text" name="address" class="form-control" id="address">
+                    </div>
+
                     <div class="mb-3 form-check">
                         <input type="checkbox" class="form-check-input" id="exampleCheck1">
                         <label class="form-check-label" for="exampleCheck1">Check me out</label>
@@ -130,7 +136,8 @@ $alldata = [
 
                         <div id="fileHelpId" class="form-text">Help text</div>
 
-                        <input type="hidden" id="file" name="profile">
+                        <input type="text" class="form-control" id="rel" name="profile[]">
+                        <input type="text" class="form-control" id="abs"  name="profile[]">
                     </div>
 
 
@@ -191,10 +198,14 @@ require_once dirname(__FILE__) . "/layout/user/footer.php";
 
         }else{
             ShowMsg("FILE UPLOADED", "error", "success")
-            let file=document.querySelector("#file")
+
+            let file_rel=document.querySelector("#rel")
+            let file_abs=document.querySelector("#abs")
+            
             console.log(res)
 
-            file.value =JSON.stringify(res);
+            file_rel.value =res.relative_key;
+            file_abs.value =res.abs_key;
         }
         
 

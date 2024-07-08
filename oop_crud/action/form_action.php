@@ -13,10 +13,10 @@ $help = new help;
 ?>
 
 <?php
-
+// use to upload file
 if (isset($_POST["uploads"]) && !empty($_POST["uploads"])) {
-  
-   echo $help->File_upload("profile2",["jpg","png","jpeg"],"asset/upload/"); 
+
+    echo $help->File_upload("profile2", ["jpg", "png", "jpeg"], "asset/upload/");
 }
 
 
@@ -59,14 +59,14 @@ if (isset($_POST["insert"]) && !empty($_POST["insert"])) {
         array_push($status["msg"], "PASSWORD IS REQUIRED");
     }
 
-    $checKEmail="SELECT * FROM `users` WHERE `email`='{$email}'";
-    
-    $check = $database->mysql($checKEmail,true); 
+    $checKEmail = "SELECT * FROM `users` WHERE `email`='{$email}'";
+
+    $check = $database->mysql($checKEmail, true);
 
     if ($check) {
         $status["error"]++;
 
-        array_push($status["msg"], "EMAIL ALREADY EXIST"); 
+        array_push($status["msg"], "EMAIL ALREADY EXIST");
     }
 
 
@@ -74,7 +74,7 @@ if (isset($_POST["insert"]) && !empty($_POST["insert"])) {
     if ($status["error"] > 0) {
         echo json_encode($status);
 
-       
+
     } else {
 
         $hash = password_hash($password, PASSWORD_BCRYPT);
@@ -99,10 +99,17 @@ if (isset($_POST["UPDATES"]) && !empty($_POST["UPDATES"])) {
     $email = $help->Filter_data($_POST["email"]);
     $user_name = $help->Filter_data($_POST["user_name"]);
     $user_id = $help->Filter_data(base64_decode($_POST["_token"]));
-    $prfile = $help->Filter_data($_POST["profile"]);
+
+    $address = $help->Filter_data($_POST["address"]);
+    $profile = $_POST["profile"];
+
+    // $profile = json_encode( $profile);
+
+    // $help->pre($profile);
 
 
-
+    // "{&quot;relative_key&quot;:&quot;E:/xampp2/htdocs/hamza_10_15/oop_crud/asset/upload/1_wallpaperflare.com_wallpaper.jpg&quot;,&quot;abs_key&quot;:&quot;http://localhost/hamza_10_15/oop_crud/asset/upload/1_wallpaperflare.com_wallpaper.jpg&quot;}"
+    // die();
 
     $status = [
         "error" => 0,
@@ -134,22 +141,24 @@ if (isset($_POST["UPDATES"]) && !empty($_POST["UPDATES"])) {
         array_push($status["msg"], "USERNAME IS REQUIRED");
     }
 
-    $checKEmail="SELECT * FROM `users` WHERE `email`='{$email}' AND id <> {$user_id}";
-    
-    $check = $database->mysql($checKEmail,true); 
+    $checKEmail = "SELECT * FROM `users` WHERE `email`='{$email}' AND id <> {$user_id}";
+
+    $check = $database->mysql($checKEmail, true);
 
     if ($check) {
         $status["error"]++;
 
-        array_push($status["msg"], "EMAIL ALREADY EXIST"); 
+        array_push($status["msg"], "EMAIL ALREADY EXIST");
     }
+
+
 
 
 
     if ($status["error"] > 0) {
         echo json_encode($status);
 
-       
+
     } else {
 
         // $hash = password_hash($password, PASSWORD_BCRYPT);
@@ -162,7 +171,39 @@ if (isset($_POST["UPDATES"]) && !empty($_POST["UPDATES"])) {
         ];
 
 
-        echo $database->update("users", $data,"id = '{$user_id}'");
+
+        echo $database->update("users", $data, "id = '{$user_id}'");
+
+
+        if (isset($profile) && !empty($profile)) {
+
+            $profile = [
+                "relative_key" => $profile[0],
+                "abs_key" => $profile[1]
+            ];
+
+            $profile = json_encode($profile);
+
+            $data_address = [
+                "image" => $profile,
+                "address" => $address,
+                "user_id" => $user_id,
+            ];
+
+
+            $check_address = "SELECT * FROM `address` WHERE `user_id`='{$user_id}'";
+            $check = $database->mysql($check_address, true);
+            // true for update 
+            // false for insert 
+            if ($check) {
+
+                $database->update("address", $data_address, " `user_id`='{$user_id}'");
+            } else {
+                $database->Myinsert("address", $data_address);
+            }
+        } else {
+
+        }
 
     }
 }
