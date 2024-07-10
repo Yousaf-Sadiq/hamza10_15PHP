@@ -60,6 +60,11 @@ class Mysqli
 
 class helper extends Mysqli
 {
+    /**
+     * $input is used to get name attribute value 
+     * $ext is used to get extention and check whether it is correct or not accroding to the user
+     * $to is used for upload destination 
+     */
 
     public function File_upload(string $input, array $ext, string $to)
     {
@@ -71,7 +76,7 @@ class helper extends Mysqli
 
         $file = $_FILES[$input]; // $_FILES["profile2"]
 
-        $file_name = rand(1,99)."_".$file["name"];
+        $file_name = rand(1,99)."_".$file["name"]; //abc.png 
         $file_tmp_name = $file["tmp_name"];
 
         $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION)); // PNG=> png
@@ -89,8 +94,9 @@ class helper extends Mysqli
         if ($status["error"] > 0) {
             return json_encode($status);
         }
-        $destination = domain2 . "/" . $to . $file_name; //relative path 
-        $abs = domain1 . "/" . $to . $file_name; //relative path 
+        
+        $destination = domain2 . "/" . $to . $file_name; //relative path => save/upload and removing
+        $abs = domain1 . "/" . $to . $file_name; //absolute path => show/get/fetching file
 
         if (move_uploaded_file($file_tmp_name, $destination)) {
 

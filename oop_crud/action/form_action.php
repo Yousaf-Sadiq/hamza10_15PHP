@@ -201,6 +201,7 @@ if (isset($_POST["UPDATES"]) && !empty($_POST["UPDATES"])) {
             } else {
                 $database->Myinsert("address", $data_address);
             }
+            
         } else {
 
         }
