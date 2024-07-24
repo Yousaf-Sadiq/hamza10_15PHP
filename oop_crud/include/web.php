@@ -11,10 +11,18 @@ define("FOLDER","hamza_10_15/oop_crud");
 
 define("ROOTPATH2",$_SERVER["DOCUMENT_ROOT"]);
 
-// E:\xampp2\htdocs\hamza_10_15 relative path 
-// http://localhost/hamza_10_15  absolute path
-define("domain1",ROOTPATH.FOLDER);
-define("domain2",ROOTPATH2."/".FOLDER);
+
+// E:\xampp2\htdocs\hamza_10_15\oop_crud relative path  // uploading / deleting
+
+
+// http://localhost/hamza_10_15/oop_crud absolute path  // fetching / getting 
+
+
+
+define("domain1",ROOTPATH.FOLDER); // absolute path 
+
+
+define("domain2",ROOTPATH2."/".FOLDER); // relative path 
 
 
 

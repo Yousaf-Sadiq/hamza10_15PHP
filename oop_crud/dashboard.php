@@ -118,7 +118,7 @@ $alldata = [
                         <label for="exampleInputPassword1" class="form-label">USER NAME</label>
                         <input type="text" name="user_name" class="form-control" id="user_name">
                     </div>
-                    
+
                     <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">ADDRESS</label>
                         <input type="text" name="address" class="form-control" id="address">
@@ -137,8 +137,16 @@ $alldata = [
                         <div id="fileHelpId" class="form-text">Help text</div>
 
                         <input type="text" class="form-control" id="rel" name="profile[]">
-                        <input type="text" class="form-control" id="abs"  name="profile[]">
+                        <input type="text" class="form-control" id="abs" name="profile[]">
+                        <!--
+                        profile => [
+                            0 => rel
+                            1=> abs
+                            ]
+
+                    -->
                     </div>
+
 
 
 
@@ -161,13 +169,13 @@ require_once dirname(__FILE__) . "/layout/user/footer.php";
 
 <script>
 
-    let profile2 = document.querySelector("#profile2");
+    let profile2 = document.querySelector("#profile2"); // input type file 
 
     profile2.addEventListener("change", async function () {
 
         let file = profile2.files[0]; // get current file 
 
-        console.log(file)
+        // console.log(file)
 
         let formData = new FormData();
         //                         
@@ -175,6 +183,7 @@ require_once dirname(__FILE__) . "/layout/user/footer.php";
         formData.append('profile2', file);
 
         let url = "<?php echo form_action; ?>";
+
         var options = {
             method: 'POST',
             body: formData,
@@ -182,8 +191,13 @@ require_once dirname(__FILE__) . "/layout/user/footer.php";
 
         let data = await fetch(url, options);
 
-        let res = await data.json();
 
+        console.log(data);
+        
+        let res = await data.json();
+        
+        console.log(res);
+        
         let error = res.error;
         let msg = res.msg;
 
@@ -194,20 +208,20 @@ require_once dirname(__FILE__) . "/layout/user/footer.php";
 
             }
 
-            profile2.value=""
+            profile2.value = ""
 
-        }else{
+        } else {
             ShowMsg("FILE UPLOADED", "error", "success")
 
-            let file_rel=document.querySelector("#rel")
-            let file_abs=document.querySelector("#abs")
-            
+            let file_rel = document.querySelector("#rel")
+            let file_abs = document.querySelector("#abs")
+
             console.log(res)
 
-            file_rel.value =res.relative_key;
-            file_abs.value =res.abs_key;
+            file_rel.value = res.relative_key;
+            file_abs.value = res.abs_key;
         }
-        
+
 
     })
 
@@ -242,6 +256,7 @@ require_once dirname(__FILE__) . "/layout/user/footer.php";
 
 
         let url = "<?php echo form_action; ?>";
+
         var options = {
             method: 'POST',
             body: formData,

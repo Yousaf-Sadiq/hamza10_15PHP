@@ -16,7 +16,12 @@ $help = new help;
 // use to upload file
 if (isset($_POST["uploads"]) && !empty($_POST["uploads"])) {
 
-    echo $help->File_upload("profile2", ["jpg", "png", "jpeg"], "asset/upload/");
+
+    $ext = ["jpg", "png", "jpeg"];
+    $input = "profile2";
+    $to = "asset/upload/";
+
+    echo $help->File_upload($input, $ext, $to);
 }
 
 
@@ -194,15 +199,34 @@ if (isset($_POST["UPDATES"]) && !empty($_POST["UPDATES"])) {
             $check_address = "SELECT * FROM `address` WHERE `user_id`='{$user_id}'";
             $check = $database->mysql($check_address, true);
             // true for update 
+
             // false for insert 
             if ($check) {
-
                 $database->update("address", $data_address, " `user_id`='{$user_id}'");
             } else {
                 $database->Myinsert("address", $data_address);
             }
-            
+
         } else {
+
+            
+            $data_address = [
+                "address" => $address,
+                "user_id" => $user_id,
+            ];
+
+
+            $check_address = "SELECT * FROM `address` WHERE `user_id`='{$user_id}'";
+            $check = $database->mysql($check_address, true);
+            // true for update 
+
+            // false for insert 
+            if ($check) {
+                $database->update("address", $data_address, " `user_id`='{$user_id}'");
+            } else {
+                $database->Myinsert("address", $data_address);
+            }
+
 
         }
 

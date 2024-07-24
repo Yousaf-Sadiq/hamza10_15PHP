@@ -95,13 +95,15 @@ class helper extends Mysqli
             return json_encode($status);
         }
         
-        $destination = domain2 . "/" . $to . $file_name; //relative path => save/upload and removing
+      
+        $relative_path = domain2 . "/" . $to . $file_name; //relative path => save/upload and removing
+      
         $abs = domain1 . "/" . $to . $file_name; //absolute path => show/get/fetching file
 
-        if (move_uploaded_file($file_tmp_name, $destination)) {
+        if (move_uploaded_file($file_tmp_name, $relative_path)) {
 
             $file_location = [
-                "relative_key" => $destination,
+                "relative_key" => $relative_path,
                 "abs_key" => $abs,
             ];
 
@@ -111,6 +113,8 @@ class helper extends Mysqli
             $status["error"]++;
             array_push($status["msg"], "FILE UPLOADING ERROR");
         }
+
+        
         return json_encode($status);
 
     }
