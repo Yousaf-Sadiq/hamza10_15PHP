@@ -43,9 +43,9 @@ trait Update
 
                 } else {
 
-                    $status["error"]++;
+                    // $status["error"]++;
 
-                    array_push($status["msg"], "DATA REMAIN SAME");
+                    array_push($status["msg"], "DATA HAS BEEN UPDATED");
                 }
 
             } else {

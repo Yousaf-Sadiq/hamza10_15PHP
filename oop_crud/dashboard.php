@@ -138,6 +138,7 @@ $alldata = [
 
                         <input type="text" class="form-control" id="rel" name="profile[]">
                         <input type="text" class="form-control" id="abs" name="profile[]">
+
                         <!--
                         profile => [
                             0 => rel
@@ -175,12 +176,16 @@ require_once dirname(__FILE__) . "/layout/user/footer.php";
 
         let file = profile2.files[0]; // get current file 
 
+        let _token = document.querySelector("#token"); // get current file 
+        _token = _token.value; // get current file 
+
         // console.log(file)
 
         let formData = new FormData();
         //                         
         formData.append('uploads', "upload");
         formData.append('profile2', file);
+        formData.append('token', _token);
 
         let url = "<?php echo form_action; ?>";
 
@@ -193,11 +198,11 @@ require_once dirname(__FILE__) . "/layout/user/footer.php";
 
 
         console.log(data);
-        
+
         let res = await data.json();
-        
+
         console.log(res);
-        
+
         let error = res.error;
         let msg = res.msg;
 

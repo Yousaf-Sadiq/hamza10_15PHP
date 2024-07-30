@@ -6,9 +6,10 @@ trait Result
 {
     public function GetResult()
     {
-      
-        // $rows = $this->exe->fetch_assoc();
 
+        // $rows = $this->exe->fetch_assoc();
+        $this->result = [];
+        
         while ($rows = $this->exe->fetch_assoc()) {
             // echo "ok while";
 
@@ -16,7 +17,7 @@ trait Result
 
         }
 
-      
+
 
         return $this->result;
 

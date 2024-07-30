@@ -17,9 +17,37 @@ $help = new help;
 if (isset($_POST["uploads"]) && !empty($_POST["uploads"])) {
 
 
+
+
     $ext = ["jpg", "png", "jpeg"];
     $input = "profile2";
     $to = "asset/upload/";
+
+    $user_id = $help->Filter_data(base64_decode($_POST["token"]));
+
+    $image_chk = "SELECT * FROM `address` WHERE `user_id`='{$user_id}'";
+
+    $check = $database->mysql($image_chk, true);
+
+    if ($check) {
+
+        $f_image = $database->GetResult();
+        $f_image = $f_image[0]["image"];
+        $f_image = json_decode($f_image, true);
+
+        if (file_exists($f_image["relative_key"])) {
+            # code...
+            unlink($f_image["relative_key"]);
+        }
+        /**
+          0=>[
+            "address_id",
+            "image"->"",
+            "user_id"=>""
+          ] 
+    **/
+
+    }
 
     echo $help->File_upload($input, $ext, $to);
 }
@@ -103,6 +131,7 @@ if (isset($_POST["UPDATES"]) && !empty($_POST["UPDATES"])) {
 
     $email = $help->Filter_data($_POST["email"]);
     $user_name = $help->Filter_data($_POST["user_name"]);
+
     $user_id = $help->Filter_data(base64_decode($_POST["_token"]));
 
     $address = $help->Filter_data($_POST["address"]);
@@ -191,7 +220,7 @@ if (isset($_POST["UPDATES"]) && !empty($_POST["UPDATES"])) {
 
             $data_address = [
                 "image" => $profile,
-                "address" => $address,
+                "address_name" => $address,
                 "user_id" => $user_id,
             ];
 
@@ -209,9 +238,9 @@ if (isset($_POST["UPDATES"]) && !empty($_POST["UPDATES"])) {
 
         } else {
 
-            
+
             $data_address = [
-                "address" => $address,
+                "address_name" => $address,
                 "user_id" => $user_id,
             ];
 
