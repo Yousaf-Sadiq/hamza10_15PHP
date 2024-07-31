@@ -84,6 +84,10 @@ $alldata = [
                         <a href="javascript:void(0)"
                             onclick="onEdit('<?php echo $id ?>','<?php echo $email ?>','<?php echo $user_name ?>')"> EDIT
                         </a>
+                        |
+                        <a href="javascript:void(0)" onclick="onDelete('<?php echo $id ?>')">
+                            DELETE
+                        </a>
                     </td>
 
                 </tr>
@@ -93,7 +97,7 @@ $alldata = [
 </div>
 
 
-<!-- Modal -->
+<!-- edit Modal -->
 <div class="modal fade" id="edit_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="edit_lable" aria-hidden="true">
     <div class="modal-dialog">
@@ -136,8 +140,8 @@ $alldata = [
 
                         <div id="fileHelpId" class="form-text">Help text</div>
 
-                        <input type="text" class="form-control" id="rel" name="profile[]">
-                        <input type="text" class="form-control" id="abs" name="profile[]">
+                        <input type="hidden" class="form-control" id="rel" name="profile[]">
+                        <input type="hidden" class="form-control" id="abs" name="profile[]">
 
                         <!--
                         profile => [
@@ -161,6 +165,45 @@ $alldata = [
         </div>
     </div>
 </div>
+
+<!-- edit Modal end -->
+
+
+
+
+
+<!-- delete Modal -->
+<div class="modal fade" id="delete_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="delete_lable" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="delete_lable">DELETE</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-bg-dark">
+                <h1>ARE YOU SURE <span class="text-danger">!</span></h1>
+
+
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-danger">NO</button>
+                <form class="p-2 " id="delete_FORM">
+
+                    <input type="hidden" name="DELETES" value="delete">
+                    <input type="hidden" name="_token" id="delete_token">
+
+                    <button type="submit" class="btn btn-primary">YES</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- delete Modal end -->
+
 <?php
 require_once dirname(__FILE__) . "/layout/user/footer.php";
 ?>
@@ -249,6 +292,14 @@ require_once dirname(__FILE__) . "/layout/user/footer.php";
     }
 
 
+    // ===================================================
+
+
+
+
+
+
+
     // update ======================================================
 
     let edit_form = document.querySelector("#Edit_FORM");
@@ -288,6 +339,73 @@ require_once dirname(__FILE__) . "/layout/user/footer.php";
 
             setTimeout(function () {
                 const truck_modal = document.querySelector('#edit_modal');
+                const modal = bootstrap.Modal.getInstance(truck_modal);
+                modal.hide();
+
+                setTimeout(function () {
+                    location.reload();
+                }, 700)
+            }, 1000)
+        }
+
+    });
+
+
+    // ========================================delete====================
+
+    function onDelete(id) {
+        let modal = document.querySelector("#delete_modal");
+
+        let BootstrapModal = new bootstrap.Modal(modal)
+
+        BootstrapModal.show(modal)
+
+
+        let token = document.querySelector("#delete_token");
+
+
+        token.value = id;
+
+    }
+
+
+    let delete_form = document.querySelector("#delete_FORM");
+
+
+    delete_form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        let formData = new FormData(delete_form);
+
+
+        let url = "<?php echo form_action; ?>";
+
+        var options = {
+            method: 'POST',
+            body: formData,
+        }
+
+        let data = await fetch(url, options);
+
+        let response = await data.json();
+
+
+        if (response.error > 0) {
+            let msg = response.msg;
+
+            for (const message of msg) {
+
+                ShowMsg(message, "error", "danger")
+            }
+
+        }
+        else {
+
+            ShowMsg(response.msg, "error", "success");
+
+
+            setTimeout(function () {
+                const truck_modal = document.querySelector('#delete_modal');
                 const modal = bootstrap.Modal.getInstance(truck_modal);
                 modal.hide();
 

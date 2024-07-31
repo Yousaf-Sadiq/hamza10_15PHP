@@ -13,6 +13,60 @@ $help = new help;
 ?>
 
 <?php
+if (isset($_POST["DELETES"]) && !empty($_POST["DELETES"])) {
+
+    $user_id = $help->Filter_data(base64_decode($_POST["_token"]));
+
+
+
+    $image_chk = "SELECT * FROM `address` WHERE `user_id`='{$user_id}'";
+
+    $check = $database->mysql($image_chk, true);
+
+
+
+    // it will execute if address data is exist
+    if ($check) {
+
+        $f_image = $database->GetResult();
+
+        if (isset($f_image[0]["image"])) {
+            # code...
+            $f_image = $f_image[0]["image"];
+            $f_image = json_decode($f_image, true);
+
+            if (file_exists($f_image["relative_key"])) {
+                # code...
+                unlink($f_image["relative_key"]);
+            }
+
+        }
+
+
+
+
+
+        $database->deletes("address", " `user_id`='{$user_id}' ");
+
+
+    }
+
+    echo $database->deletes("users", " `id`='{$user_id}' ");
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
 // use to upload file
 if (isset($_POST["uploads"]) && !empty($_POST["uploads"])) {
 
