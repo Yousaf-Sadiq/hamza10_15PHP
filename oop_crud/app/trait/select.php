@@ -47,7 +47,6 @@ trait Select
         if ($this->exe) {
             // echo $this->query;
 
-            
             return true;
         }
         else{

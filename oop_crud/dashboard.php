@@ -10,7 +10,8 @@ $help = new help;
 
 $q = $obj->Select("users", null, null, "id ASC", null);
 
-echo domain2;
+
+// echo domain2;
 if ($q) {
     // echo "ok query";
     $abc = $obj->GetResult();
@@ -60,21 +61,78 @@ $alldata = [
         <thead>
             <tr>
                 <th scope="col">ID</th>
+                <th scope="col">image</th>
                 <th scope="col">username</th>
                 <th scope="col">EMAIL</th>
+                <th scope="col">Address</th>
                 <th scope="col">ACTION</th>
             </tr>
         </thead>
         <tbody>
 
             <?php
+            //  user table foreach 
             foreach ($abc as $key => $value) {
+
+                //  select * from `address` where `user_id`= '{$value["id"]}
+            
+                $adr = $obj->Select("address", "*", "`user_id`= '{$value["id"]}'");
+
+
+
+
+
+
 
                 ?>
                 <tr class="">
                     <td scope="row"><?php echo $value["id"] ?></td>
+
+                    <?php
+                    $adr_get = $obj->GetResult();
+                    // echo domain2;
+                    if (count($adr_get) > 0) {
+                        // echo "ok query";
+                
+                        // address data
+                        foreach ($adr_get as $adr_key => $adr_value) {
+                            # code...
+                            $adr_img = json_decode($adr_value["image"], true);
+
+                            if (empty($adr_value["address_name"]) || !isset($adr_value["address_name"])) {
+                                # code...
+                                $address_name = "not defined";
+                            } else {
+
+                                $address_name = $adr_value["address_name"];
+                            }
+                        }
+
+
+                    } else {
+                        $adr_img["abs_key"] = domain1 . "/asset/upload/default.png";
+
+                        $address_name = "not defined";
+                    } ?>
+
+
+
+
+                    <td class="w-25 h-25">
+                        <a href="<?php echo $adr_img["abs_key"] ?>" target="_blank" rel="noopener noreferrer">
+
+                            <img src="<?php echo $adr_img["abs_key"] ?>" alt=""
+                                class="img-thumbnail w-50 rounded-circle shadow-4-strong">
+                        </a>
+                    </td>
+
+
+
                     <td><?php echo $value["user_name"] ?></td>
                     <td><?php echo $value["email"] ?></td>
+                    <td><?php echo $address_name ?></td>
+
+
                     <?php
                     $id = base64_encode($value["id"]);
                     $email = $value["email"];
